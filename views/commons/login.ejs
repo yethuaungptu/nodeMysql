@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>Sign in</title>
+</head>
+
+<body>
+  <h1>login</h1>
+  <form id="frm">
+    Email: <input type="email" id="email" name="email" required> Password: <input type="password" id="password" name="password" required>
+    <button type="button" id="btn_submit" name="button">Sign In</button>
+  </form>
+</body>
+<script src="/js/jquery.min.js" charset="utf-8"></script>
+<script src="/js/jquery.validate.js" charset="utf-8"></script>
+<script type="text/javascript">
+  $(function() {
+    $('#frm').validate();
+    $('#btn_submit').click(function() {
+      console.log('valid', $('#frm').valid());
+      if (!$('#frm').valid()) return false;
+      $.post(
+        '/login', {
+          email: $('#email').val(),
+          password: $('password').val()
+        },
+      ).done(function(res) {
+        if (res.status) {
+          location.href = '/';
+        } else {
+          $('#password').select();
+          alert(res.msg);
+        }
+      }).fail(function(err) {
+        alert(err.status + ' ' + err.responseText);
+      });
+    });
+
+  });
+</script>
+
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title><%= title %></title>
+    <style media="screen">
+      td{
+          border: 1px solid black;
+        }
+      table,th{
+          border: 1px solid black;
+          border-collapse: collapse;
+        }
+    </style>
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <form name="frm" action="/admin/users/list" method="post">
+      <input type="hidden" name="sortField" id="sortField" value="<%=order[0]%>">
+      <input type="hidden" name="sortOrder" id="sortOrder" value="<%=order[1]%>">
+      <select name="role">
+        <option value="">All</option>
+        <option value="ADMIN">Admin</option>
+        <option value="USER">User</option>
+      </select>
+      <input type="search" name="keyword" value="<%= search.keyword || ''%>">
+      <input type="submit" name="" value="Search">
+    </form>
+    <table>
+      <thead>
+        <tr>
+          <th>No</th>
+          <th data-order="name">Name</th>
+          <th data-order="email">Email</th>
+          <th data-order="role">Role</th>
+          <th data-order="updated">Updated</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if(users.length == 0){%>
+          <tr>
+            <td colspan="5">No Data not found!!</td>
+          </tr>
+        <%}%>
+
+        <% for(var i =0; i< users.length; i++){%>
+          <tr>
+            <td><%= (paging.currPage-1)*paging.pSize+i+1 %></td>
+            <td> <a href="/admin/users/view/<%= users[i].uid %>"><%= users[i].name %></a></td>
+            <td><%= users[i].email %></td>
+            <td><%= users[i].role %></td>
+            <td><%= users[i].updated %></td>
+          </tr>
+        <%}%>
+      </tbody>
+    </table>
+    <%- (paging.prev)? `<a href="/admin/users/list?p=${paging.prev}&ps=${paging.perPage}">Prev</a>`:''%>
+    <% for(page of paging.pages){%>
+      <%- (page== paging.currPage)? `[${page}]`: `<a href="/admin/users/list?p=${page}&ps=${paging.perPage}">${page}</a>` %>
+    <%}%>
+    <%- (paging.next)? `<a href="/admin/users/list?p=${paging.next}&ps=${paging.perPage}">Next</a>`:''%>
+    <a href="/admin/users/add">User add</a>
+  </body>
+  <script src="/js/jquery.min.js" charset="utf-8"></script>
+  <script type="text/javascript">
+    if('<%= search.role %>'){
+      frm.role.value = '<%= search.role%>'
+    }
+    if('<%= messages.info %>'){
+      alert('<%= messages.info %>');
+    }
+    $(function(){
+      $("th").click(function () {
+        if(!$(this).data('order')) return false;
+        var data = $(this).attr("data-order");
+        $('#sortField').val(data);
+        ($('#sortOrder').val()=='DESC')? $('#sortOrder').val('ASC') : $('#sortOrder').val('DESC');
+        frm.submit();
+      });
+      $('th[data-order="<%=order[0]%>"]').append(($('#sortOrder').val()=='DESC')? '\u25B2': '\u25BC');
+    });
+  </script>
+</html>

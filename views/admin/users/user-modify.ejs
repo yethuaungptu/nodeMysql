@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title><%= title %></title>
+  </head>
+  <body>
+    <form name="frm" action="/admin/users/modify" method="post">
+      <input type="hidden" name="uid" value="<%=user.uid%>">
+      Name:
+      <input type="text" name="name" value="<%= user.name %>"><p>
+      Email: <%= user.email %><p>
+      Role:
+      <select name="role">
+        <option value="ADMIN">Admin</option>
+        <option value="USER">User</option>
+      </select><p>
+      <button type="submit" name="button">Modify</button>
+    </form>
+
+  </body>
+  <script type="text/javascript">
+    frm.role.value = '<%=user.role%>';
+  </script>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title><%= title %></title>
+  </head>
+  <body>
+    <form name="frm" action="/admin/users/remove" method="post">
+      <input type="hidden" name="uid" value="<%=user.uid%>">
+      Name: <%= user.name %><p>
+      Email: <%= user.email %><p>
+      Role: <%= user.role %><p>
+      Updated: <%= user.updated %><p>
+      <a href="/admin/users/list">Go to List</a>
+      <a href="/admin/users/modify/<%=user.uid%>">Go to modify</a>
+      <a href="javascript:del();">Delete</a>
+    </form>
+
+  </body>
+  <script type="text/javascript">
+  console.log('<%=user.uid%>');
+    function del() {
+      if(confirm('Are you sure?')){
+         frm.submit();
+      }
+    }
+    <%- (messages.info)? `alert('${messages.info}')`: ''%>
+  </script>
+</html>
