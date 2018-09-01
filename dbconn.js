@@ -5,7 +5,7 @@ var pool  = mysql.createPool({
   host            : 'db4free.net',
   user            : 'yethuaung',
   password        : 'Zikimi95',
-  database        : 'db_blank'
+  database        : 'testing_node'
 });
 
 module.exports = pool;
